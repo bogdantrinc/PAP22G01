@@ -12,7 +12,7 @@ def inception(begin=9, end=17):
         def wrapper(*args, **kwargs):
             if datetime.now().hour not in range(begin, end):
                 return None
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         return wrapper
     return decorator
 
