@@ -28,18 +28,22 @@ class SystemInformation:
 
     @staticmethod
     def available_memory():
-        result = os.popen('systeminfo')
-        for line in result.readlines():
-            pattern = r"Total Physical Memory:\s+(?P<max_memory>.*)|Available Physical Memory:\s+(?P<available_memory>.*)"
-            match = re.search(pattern, line)
-            if match:
-                print(match.string.strip())
+        result = os.popen('systeminfo').read()
+        pattern = r"(Total Physical Memory:\s+(?P<max_memory>.*))\n(Available Physical Memory:\s+(?P<available_memory>.*))"
+        match = re.search(pattern, result)
+        if match:
+            max_memory = match.group("max_memory")
+            available_memory = match.group("available_memory")
+            used_memory = str(int(max_memory[:-3].replace(',', '')) - int(available_memory[:-3].replace(',', ''))) + ' MB'
+            print("Total Physical Memory: ", max_memory)
+            print("Used Physical Memory: ", used_memory)
+            print("Available Physical Memory: ", available_memory)
 
     @staticmethod
     def routing_table():
-        result = os.popen('route print')
+        result = os.popen('route print').read()
         pattern = r"IPv4 Route Table\n(?P<routing_table>[^\r\n]+((\r|\n|\r\n)[^\r\n]+)*=)"
-        match = re.search(pattern, result.read())
+        match = re.search(pattern, result)
         if match:
             print("    IPv4 Route Table    ".center(75, '-'))
             print(match.group("routing_table"))
