@@ -1,3 +1,6 @@
+"""
+INCOMPLET!!! Numeroteaza capitolele in functie de numarul de #-uri.
+"""
 import re
 
 

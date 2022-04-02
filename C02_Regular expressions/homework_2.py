@@ -44,9 +44,25 @@ class SystemInformation:
         result = os.popen('route print').read()
         pattern = r"IPv4 Route Table\n(?P<routing_table>[^\r\n]+((\r|\n|\r\n)[^\r\n]+)*=)"
         match = re.search(pattern, result)
+        tabel_nou = [['Network Destination', 'Netmask', 'Gateway', 'Interface']]    # In noul tabel salvam datele
         if match:
-            print("    IPv4 Route Table    ".center(75, '-'))
-            print(match.group("routing_table"))
+            # print("    IPv4 Route Table RAW    ".center(75, '-'))
+            # print(match.group("routing_table"))
+            pattern = r'^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}$'    # pattern pt. adrese IP
+            for rand in match.group("routing_table").splitlines():    # parcurge datele rand cu rand
+                linie = list(filter(lambda element: re.fullmatch(pattern, element), rand.split()))    # extrag adrese IP
+                if len(linie) == 0:    # elimin lista goala
+                    continue
+                elif len(linie) == 3:    # linia cu doar 3 IP-uri are 'On-link' la Gateway
+                    linie.insert(2, "On-link")
+                tabel_nou.append(linie)    # salvam datele in noul tabel
+
+        # Afisarea rezultatelor
+        print("    IPv4 Route Table    ".center(75, '-'))
+        print("".center(76, '='))
+        for linie in tabel_nou:
+            print(linie[0].rjust(19), linie[1].rjust(19), linie[2].rjust(19), linie[3].rjust(19), sep='')
+        print("".center(76, '='))
 
 
 # SystemInformation.ip_getter()
