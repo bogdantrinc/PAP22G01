@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package c15_grpc;
+
+service Greeter {
+    rpc SayHello (HelloRequest) returns (HelloReplay) {}
+    rpc GetData (GetMeasurements) returns (GiveResponse) {}
+}
+
+message GetMeasurements {
+    int32 width = 1;
+    int32 length = 2;
+}
+
+message GiveResponse {
+    int32 result = 1;
+}
+
+
+message HelloRequest {
+    string name = 1;
+}
+
+message HelloReplay {
+    string response = 1;
+}
+
+
