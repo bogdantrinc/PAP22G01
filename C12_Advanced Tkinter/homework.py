@@ -1,8 +1,14 @@
 """
     Create Mine Sweeper game layout with  5 rows and 5 columns
+
+    * Add menus to you Mine Sweeper game to be able to
+    - Start new game
+    - Change game layout (5x5, 5x8, 8x8
+    - Close game
 """
 import tkinter
 from random import randint
+from tkinter import messagebox
 
 
 class MineSweeper():
@@ -23,9 +29,20 @@ class MineSweeper():
         return randint(0, 1)
 
     def push(self, location: list):
+        warning = None
+        self.__getattribute__(f'button{location[0], location[1]}').destroy()
         if self.__getattribute__(f'label{location[0], location[1]}').cget("text") == 1:
             print("Bomba!")
-        self.__getattribute__(f'button{location[0], location[1]}').destroy()
+            warning = messagebox.askyesno(title=self.title, message="Game over! Try again?")
+        if warning:
+            self.main_window.destroy()
+            self.new_game()
+
+    def new_game(self):
+        new_game = MineSweeper()
+        new_title = 'New ' + self.title
+        new_game.main_window.title(new_title)
+        new_game.run()
 
     def run(self):
         self.main_window.mainloop()

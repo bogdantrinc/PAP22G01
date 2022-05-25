@@ -93,6 +93,7 @@ class MainMenu():
         s.quit()
 
     def login(self):
+        pass
 
 
 window = tkinter.Tk()
