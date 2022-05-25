@@ -15,20 +15,47 @@ Create a class for an object that implement three methods.
     - you can get the python version by using the command
             python3 --version
 """
+import os
+import re
 from subprocess import Popen
+from time import sleep
 
 
 class DoThings:
-    @staticmethod
-    def get_version():
+    def get_version(self):
         Popen(['powershell', '-c', r"Invoke-WebRequest -Uri 'https://en.wikipedia.org/wiki/History_of_Python' -OutFile 'C:\Users\Bogdan\PycharmProjects\PAP22G01\C05_Subprocesses\pagina.html'"])
-        # with open('pagina.html', 'r') as fisier:
-        #     print(fisier.read())
+        sleep(1)
+        with open('pagina.html', 'r', encoding='utf8') as fisier:
+            for line in fisier.readlines():
+                pattern = "<td><i>(?P<version>\d*.\d*.\d*)"
+                match = re.search(pattern, line)
+                if match:
+                    self.latest_version = match.group("version")
+        return self.latest_version
+
 
     @staticmethod
     def download():
         Popen(['powershell', '-c', r"Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.10.4/python-3.10.4-amd64.exe' -OutFile 'C:\Users\Bogdan\PycharmProjects\PAP22G01\C05_Subprocesses\python-3.10.4-amd64.exe'"])
 
 
+    def compare(self):
+        result = os.popen('python3 --version')
+        pattern = "[a-zA-Z]* (?P<version>\d*.\d*.\d*)"
+        match = re.search(pattern, result.readline())
+        if match:
+            self.installed_version = match.group("version")
+        self.latest_version = self.latest_version.split('.')
+        self.installed_version = self.installed_version.split('.')
+        if self.latest_version[0] != self.installed_version[0] or self.latest_version[1] != self.installed_version[1]:
+            print("You don't have the latest version!")
+        else:
+            print("You have the latest version!")
+        print("The latest version is: ", ".".join(self.latest_version))
+        print("The installed version is: ", ".".join(self.installed_version))
+
+
 obiect = DoThings()
-obiect.get_version()
+print("Official Version: ", obiect.get_version())
+obiect.download()
+obiect.compare()

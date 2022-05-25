@@ -1,5 +1,5 @@
 """
-INCOMPLET!!! Numeroteaza capitolele in functie de numarul de #-uri.
+Incomplet, ar trebui sa numeroteze capitolele in functie de numarul de #-uri.
 """
 import re
 
