@@ -63,6 +63,7 @@ class GiveMeMoreTime:
         return result
 
     async def get_time(self):
+        """Returns the locations of different timezones."""
         async with aiohttp.ClientSession() as client:
             result = await client.request(method='GET', url=f'http://worldtimeapi.org/api/timezone/europe')
         return json.loads(await result.text())
