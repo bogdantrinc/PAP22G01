@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package c15_grpc;
+
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReplay) {}
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloReplay {
+  string response = 1;
+}
